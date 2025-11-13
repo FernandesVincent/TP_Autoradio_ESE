@@ -9,10 +9,8 @@
 
 #include <stdio.h>
 
-#include "portmacro.h"
 #include "usart.h"
 #include "gpio.h"
-#include <cmsis_os.h>
 
 SemaphoreHandle_t sem_uart_rx;
 
@@ -30,13 +28,15 @@ static char print_buffer[BUFFER_SIZE];
 static char uart_read() {
 	char c;
 
-	HAL_UART_Receive(&UART_DEVICE, (uint8_t*)(&c), 1, HAL_MAX_DELAY);
-
+	// HAL_UART_Receive(&UART_DEVICE, (uint8_t*)(&c), 1, HAL_MAX_DELAY);
+	HAL_UART_Receive_IT(&UART_DEVICE, (uint8_t*)(&c), 1);
+	xSemaphoreTake(sem_uart_rx, portMAX_DELAY);
 	return c;
 }
 
 static int uart_write(char * s, uint16_t size) {
 	HAL_UART_Transmit(&UART_DEVICE, (uint8_t*)s, size, HAL_MAX_DELAY);
+	// HAL_UART_Transmit_IT(&UART_DEVICE, (uint8_t*)s, size);
 	return size;
 }
 
@@ -61,6 +61,7 @@ void shell_init() {
 
 	shell_add('h', sh_help, "Help");
 }
+
 
 int shell_add(char c, int (* pfunc)(int argc, char ** argv), char * description) {
 	if (shell_func_list_size < SHELL_FUNC_LIST_MAX_SIZE) {
@@ -161,7 +162,6 @@ int shell_run() {
 
 void shell_uart_rx_callback(void) {
 	BaseType_t hptw = pdFALSE;
-	// Notify the shell task that data has been received
-	vTaskNotifyGiveFromISR(sem_uart_rx, &hptw);
+	xSemaphoreGiveFromISR(sem_uart_rx, &hptw);
 	portYIELD_FROM_ISR(hptw);
 }
