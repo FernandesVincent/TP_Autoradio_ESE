@@ -17,6 +17,15 @@
 #define BUFFER_SIZE 40
 #define SHELL_FUNC_LIST_MAX_SIZE 64
 
+typedef struct{
+  
+
+} shell_t;
+
+
+
+
+
 
 
 void shell_init();
