@@ -9,6 +9,7 @@
 #define INC_LIB_SHELL_SHELL_H_
 
 #include <stdint.h>
+#include "cmsis_os.h"
 
 #define UART_DEVICE huart2
 
@@ -16,8 +17,11 @@
 #define BUFFER_SIZE 40
 #define SHELL_FUNC_LIST_MAX_SIZE 64
 
+
+
 void shell_init();
 int shell_add(char c, int (* pfunc)(int argc, char ** argv), char * description);
 int shell_run();
+void shell_uart_rx_callback(void);
 
 #endif /* INC_LIB_SHELL_SHELL_H_ */
