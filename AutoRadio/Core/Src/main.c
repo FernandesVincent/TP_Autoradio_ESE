@@ -18,12 +18,15 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "cmsis_os.h"
+#include "stm32l4xx_hal_uart.h"
 #include "usart.h"
 #include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include <stdio.h>
+#include "shell.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -49,6 +52,7 @@
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
+void MX_FREERTOS_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -60,6 +64,19 @@ int __io_putchar(int ch)
   HAL_UART_Transmit(&huart2, (uint8_t *)&ch, 1, HAL_MAX_DELAY);
   return ch;
 }
+
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
+  if(huart->Instance == USART2){
+
+    
+  }
+}
+
+void task_shell(void *unsued) {
+  shell_init();
+  shell_run();
+}
+
 /* USER CODE END 0 */
 
 /**
@@ -94,7 +111,28 @@ int main(void)
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
 
+  //Question 5.a: Make the shell functional in a task
+
+  if(xTaskCreate(task_shell, "Shell Task", 512, NULL, 2, NULL) != pdPASS) {
+    printf("Failed to create Shell Task\r\n");
+    Error_Handler();
+  }
+
+  //Question 5.b: Make the shell functionnal using interrupts
+  
+
+
+
+  vTaskStartScheduler();
   /* USER CODE END 2 */
+
+  /* Call init function for freertos objects (in cmsis_os2.c) */
+  MX_FREERTOS_Init();
+
+  /* Start scheduler */
+  osKernelStart();
+
+  /* We should never get here as control is now taken by the scheduler */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
@@ -108,12 +146,10 @@ int main(void)
     // char msg[] = "Hello World!\r\n";
     // HAL_UART_Transmit(&huart2, (uint8_t*)msg, sizeof(msg)-1, HAL_MAX_DELAY);
     // HAL_Delay(1000);
+
     //Question 4: Use printf to transmit "Hello World!" via UART2 every 1 second
-    printf("Printf working!\r\n");
-    HAL_Delay(1000);
-
-
-
+    // printf("Printf working!\r\n");
+    // HAL_Delay(1000);
 
 
     /* USER CODE END WHILE */

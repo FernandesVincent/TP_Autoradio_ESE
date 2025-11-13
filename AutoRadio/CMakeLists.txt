@@ -44,6 +44,10 @@ file(GLOB_RECURSE SOURCES
     "${CMAKE_SOURCE_DIR}/Drivers/STM32L4xx_HAL_Driver/Src/*.c"
     "${CMAKE_SOURCE_DIR}/Drivers/CMSIS/RTOS2/Template/*.c"
     "${CMAKE_SOURCE_DIR}/Drivers/CMSIS/RTOS2/Source/*.c"
+    "${CMAKE_SOURCE_DIR}/Middlewares/Third_Party/FreeRTOS/Source/*.c"
+    "${CMAKE_SOURCE_DIR}/Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/*.c"
+    "${CMAKE_SOURCE_DIR}/Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/*.c"
+    "${CMAKE_SOURCE_DIR}/shell/*.c"
 )
 
 # --------------------------------------------
@@ -61,6 +65,11 @@ target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
     "${CMAKE_SOURCE_DIR}/Drivers/CMSIS/Device/ST/STM32L4xx/Include"
     "${CMAKE_SOURCE_DIR}/Drivers/CMSIS/RTOS2/Template"
     "${CMAKE_SOURCE_DIR}/Drivers/CMSIS/RTOS2/Source"
+    "${CMAKE_SOURCE_DIR}/Middlewares/Third_Party/FreeRTOS/Source/include"
+    "${CMAKE_SOURCE_DIR}/Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F"
+    "${CMAKE_SOURCE_DIR}/Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS"
+    "${CMAKE_SOURCE_DIR}/shell"
+
 )
 
 # --------------------------------------------
