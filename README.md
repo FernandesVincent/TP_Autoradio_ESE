@@ -1,5 +1,9 @@
 # TP_Autoradio_ESE
 
+## Groupe
+FERNANDES Vincent
+CAILLAUD Paul
+
 ## 2. Le GPIO Expander et le VU-Metre
 
 ### 2.1 Configuration
@@ -11,4 +15,12 @@
 2. En regardant les entrees du MCP, on regarde les pins VU_X et on regarde les pins correspondants sur le STM32.  
 On peut ensuite aller sur l'IOC du STM32 et on remarque que le seul SPI disonible, par exemple pour VU_MISO est SPI3_MISO. On utilise donc le **SPI3**.  
 
-3. Dans STM32CubeIDE, il faut donc activer le SPI3, verifier les broches MISO, MOSI, SCK et CS. Il faut de plus activer un GPIO pour activer et desactiver le SPI et un autre GPIO pour le RESET.
+3. Dans STM32CubeIDE, il faut donc activer le SPI3, verifier les broches MISO, MOSI, SCK et CS. Il faut de plus activer un GPIO pour activer le RESET.
+
+
+## 3. Le CODEC Audio SGTL5000
+
+### 3.1 Configuration Prealables
+
+1. Sachant que l'on a le module de 32 pins, pour l'I2C, on utilise les pins numeros 27 pour SDA et 29 pour SCL.
+Sur le schematic on a que I2C_SDA correspond a la pin PB10 et la pin PB11 correspond a I2C_SDA.
