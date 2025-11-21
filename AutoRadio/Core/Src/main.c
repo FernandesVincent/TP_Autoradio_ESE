@@ -19,6 +19,8 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "cmsis_os.h"
+#include "spi.h"
+#include "stm32l4xx_hal_gpio.h"
 #include "usart.h"
 #include "gpio.h"
 
@@ -26,6 +28,7 @@
 /* USER CODE BEGIN Includes */
 #include <stdio.h>
 #include "shell.h"
+#include "MCP23S17.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -70,10 +73,25 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
   }
 }
 
-void task_shell(void *unsued) {
-  shell_init();
-  shell_run();
-}
+// void task_shell(void *unsued) {
+//   shell_init();
+//   shell_run();
+// }
+
+// void task_led_expender(void *unused) {
+//   MCP23S17_Init();
+//   printf("MCP23S17 Initialized\r\n");
+//   while(1) {
+//     MCP23S17_WriteGPIOA(0xFF);
+//     MCP23S17_WriteGPIOB(0xFF);
+//     vTaskDelay(500 / portTICK_PERIOD_MS);
+//     MCP23S17_WriteGPIOA(0x00);
+//     MCP23S17_WriteGPIOB(0x00);
+//     vTaskDelay(500 / portTICK_PERIOD_MS);
+//   }
+//   // MCP23S17_WriteGPIOA(0x00);
+//   // MCP23S17_WriteGPIOB(0x00);
+// }
 
 /* USER CODE END 0 */
 
@@ -107,28 +125,35 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_USART2_UART_Init();
+  MX_SPI3_Init();
   /* USER CODE BEGIN 2 */
 
   //Question 5.a: Make the shell functional in a task
 
-  if(xTaskCreate(task_shell, "Shell Task", 512, NULL, 2, NULL) != pdPASS) {
-    printf("Failed to create Shell Task\r\n");
-    Error_Handler();
-  }
-
-  //Question 5.b: Make the shell functionnal using interrupts
+  // if(xTaskCreate(task_shell, "Shell Task", 512, NULL, 1, NULL) != pdPASS) {
+  //   printf("Failed to create Shell Task\r\n");
+  //   Error_Handler();
+  // }
   
+  //2 - GPIO Expander et VU-Metre
 
+  //2.2.1 - Tests Faire clignoter une LED via le GPIO Expander
 
+  // if(xTaskCreate(task_led_expender, "Task LED Expender", 256, NULL, 1, NULL) != pdPASS) {
+  //   printf("Failed to  led expender task\r\n");
+  //   Error_Handler();
+  // }       
 
-  vTaskStartScheduler();
+  MCP23S17_Init();
+  printf("MCP23S17 Initialized\r\n");
+  // vTaskStartScheduler();
   /* USER CODE END 2 */
 
   /* Call init function for freertos objects (in cmsis_os2.c) */
-  MX_FREERTOS_Init();
+  // MX_FREERTOS_Init();
 
   /* Start scheduler */
-  osKernelStart();
+  // osKernelStart();
 
   /* We should never get here as control is now taken by the scheduler */
 
@@ -136,6 +161,13 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+    MCP23S17_WriteGPIOA(0xFF);
+    MCP23S17_WriteGPIOB(0xFF);
+    HAL_Delay(500);
+    MCP23S17_WriteGPIOA(0x00);
+    MCP23S17_WriteGPIOB(0x00);
+    HAL_Delay(500);
+    printf("Hello World!\r\n");
     //Question 2: Toggle the state of the LED2 every 500 ms
     // HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
     // HAL_Delay(500);
