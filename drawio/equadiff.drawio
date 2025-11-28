@@ -1,0 +1,55 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36" version="29.2.1">
+  <diagram name="Page-1" id="LKazJeTJzVn-v4uHDH25">
+    <mxGraphModel dx="1097" dy="592" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="leDnq8nlQfcUmu4i0iuu-26" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="" vertex="1">
+          <mxGeometry height="555" width="450" x="70" y="255" as="geometry" />
+        </mxCell>
+        <mxCell id="leDnq8nlQfcUmu4i0iuu-6" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="$$V_{in} = V_R + V_C$$" vertex="1">
+          <mxGeometry height="30" width="60" x="160" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="leDnq8nlQfcUmu4i0iuu-7" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="$$V_{in} = R*i + V_{out}$$" vertex="1">
+          <mxGeometry height="30" width="60" x="170" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="leDnq8nlQfcUmu4i0iuu-9" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="\[ V_{\mathrm{in}} = RC&amp;nbsp; \frac{\mathrm{d} V_{\mathrm{out}}}{\mathrm{d}t} + V_{\mathrm{out}}&amp;nbsp; \]" vertex="1">
+          <mxGeometry height="30" width="170" x="130" y="180" as="geometry" />
+        </mxCell>
+        <mxCell id="leDnq8nlQfcUmu4i0iuu-10" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="On utilise la formule du condensateur : $$i = C&amp;nbsp; \frac{\mathrm{d} V_{\mathrm{out}}}{\mathrm{d}t} $$" vertex="1">
+          <mxGeometry height="30" width="400" x="50" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="leDnq8nlQfcUmu4i0iuu-14" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="On passe sur l&#39;équation de récurrence avec :" vertex="1">
+          <mxGeometry height="30" width="250" x="130" y="270" as="geometry" />
+        </mxCell>
+        <mxCell id="leDnq8nlQfcUmu4i0iuu-16" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="&lt;p dir=&quot;auto&quot; style=&quot;white-space-collapse: preserve;&quot;&gt;$$\frac{\mathrm{d} V_{\mathrm{out}}}{\mathrm{d} t} = \frac{V[n] - V[n-1]}{T}$$&lt;/p&gt;" vertex="1">
+          <mxGeometry height="30" width="150" x="190" y="300" as="geometry" />
+        </mxCell>
+        <mxCell id="leDnq8nlQfcUmu4i0iuu-17" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Il vient :" vertex="1">
+          <mxGeometry height="30" width="60" x="130" y="330" as="geometry" />
+        </mxCell>
+        <mxCell id="leDnq8nlQfcUmu4i0iuu-18" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="\[ V_{in}[n] = RC \cdot \frac{V_{out}[n] - V_{out}[n-1]}{T} + V_{out}[n] \]" vertex="1">
+          <mxGeometry height="30" width="280" x="140" y="370" as="geometry" />
+        </mxCell>
+        <mxCell id="leDnq8nlQfcUmu4i0iuu-19" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="\[ V_{in}[n] = RCf_s \cdot (V_{out}[n] - V_{out}[n-1]) + V_{out}[n] \]" vertex="1">
+          <mxGeometry height="30" width="540" x="20" y="410" as="geometry" />
+        </mxCell>
+        <mxCell id="leDnq8nlQfcUmu4i0iuu-21" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="\[ V_{in}[n] = (1 + RCf_s) V_{out}[n] - RCf_s V_{out}[n-1] \]" vertex="1">
+          <mxGeometry height="30" width="390" x="90" y="450" as="geometry" />
+        </mxCell>
+        <mxCell id="leDnq8nlQfcUmu4i0iuu-22" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="\[ V_{out}[n] = \frac{1}{(1 + RCf_s)} \cdot (V_{in}[n] + RCf_s V_{out}[n-1]) \]" vertex="1">
+          <mxGeometry height="30" width="230" x="190" y="500" as="geometry" />
+        </mxCell>
+        <mxCell id="leDnq8nlQfcUmu4i0iuu-23" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="\[ V_{out}[n] = \frac{1}{(1 + RCf_s)} V_{in}[n] + \frac{RCf_s}{(1 + RCf_s)}&amp;nbsp;V_{out}[n-1]) \]" vertex="1">
+          <mxGeometry height="30" width="330" x="150" y="555" as="geometry" />
+        </mxCell>
+        <mxCell id="leDnq8nlQfcUmu4i0iuu-24" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Donc : $$A = 1;\ B = RCf_s&amp;nbsp; \ et \ C = \frac{1}{(1 + RCf_s)}&amp;nbsp;$$&amp;nbsp;" vertex="1">
+          <mxGeometry height="30" width="470" x="30" y="670" as="geometry" />
+        </mxCell>
+        <mxCell id="leDnq8nlQfcUmu4i0iuu-25" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="ou $$A = 1;\ B = \frac{f_s}{2\pi f_c}&amp;nbsp; \ et \ C = \frac{1}{(1 + \frac{f_s}{2\pi f_c})}$$" vertex="1">
+          <mxGeometry height="30" width="340" x="95" y="730" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

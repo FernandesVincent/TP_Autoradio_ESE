@@ -23,4 +23,27 @@ On peut ensuite aller sur l'IOC du STM32 et on remarque que le seul SPI disonibl
 ### 3.1 Configuration Prealables
 
 1. Sachant que l'on a le module de 32 pins, pour l'I2C, on utilise les pins numeros 27 pour SDA et 29 pour SCL.
-Sur le schematic on a que I2C_SDA correspond a la pin PB10 et la pin PB11 correspond a I2C_SDA.
+Sur le schematic on a que I2C_SDA correspond a la pin PB10 et la pin PB11 correspond a I2C_SDA.  
+
+### 3.2 Configuration du CODEC par l'I2C
+
+1. On observe à l'oscilloscope la clock suivante à la fréquence d'environ 12.3MHz:
+
+![](/drawio/MCLK.jpg)
+
+## 5. Filtre RC 
+
+1. On a le montage suivant: 
+
+![](/drawio/circuit_rc.png)
+
+On calcule l'équation différencielle telle que : 
+
+![](/drawio/equadiff.drawio.png)
+
+2. Équation de récurrence :
+
+![](/drawio/recurrence.png)
+
+
+
