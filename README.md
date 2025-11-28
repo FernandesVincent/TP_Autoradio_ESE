@@ -31,6 +31,16 @@ Sur le schematic on a que I2C_SDA correspond a la pin PB10 et la pin PB11 corres
 
 ![](/drawio/MCLK.jpg)
 
+3. On a qur l'oscilloscope : 
+
+![](/drawio/regchipID.jpg)
+
+On décode : 0b
+
+
+
+
+ 
 ## 5. Filtre RC 
 
 1. On a le montage suivant: 
