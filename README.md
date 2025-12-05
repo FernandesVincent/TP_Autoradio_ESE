@@ -23,7 +23,7 @@ On peut ensuite aller sur l'IOC du STM32 et on remarque que le seul SPI disonibl
 ### 3.1 Configuration Prealables
 
 1. Sachant que l'on a le module de 32 pins, pour l'I2C, on utilise les pins numeros 27 pour SDA et 29 pour SCL.
-Sur le schematic on a que I2C_SDA correspond a la pin PB10 et la pin PB11 correspond a I2C_SDA.  
+Sur le schematic on a que I2C_SCL correspond a la pin PB10 et la pin PB11 correspond a I2C_SDA.  
 
 ### 3.2 Configuration du CODEC par l'I2C
 
@@ -37,6 +37,24 @@ Sur le schematic on a que I2C_SDA correspond a la pin PB10 et la pin PB11 corres
 
 On décode : 0b
 
+5. 
+
+## 3.3 Signaux I2S
+
+3. On observe les signaux suivant à l'oscilloscope:  
+
+Pour MCLK on a :  
+![](/drawio/mclk_2.jpg)
+
+Pour SCLK on a :
+![](/drawio/sclk.jpg)
+
+Pour SCL on a :
+![](/drawio/scl.jpg)
+
+## 3.4 Génération de signal audio
+
+2. On observe le signal triangulaire suivant:
 
 
 
