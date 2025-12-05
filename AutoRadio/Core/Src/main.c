@@ -19,8 +19,10 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "cmsis_os.h"
+#include "dma.h"
+#include "i2c.h"
+#include "sai.h"
 #include "spi.h"
-#include "stm32l4xx_hal_gpio.h"
 #include "usart.h"
 #include "gpio.h"
 
@@ -54,6 +56,7 @@ extern SemaphoreHandle_t sem_uart_rx;
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
+void PeriphCommonClock_Config(void);
 void MX_FREERTOS_Init(void);
 /* USER CODE BEGIN PFP */
 
@@ -78,20 +81,21 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
 //   shell_run();
 // }
 
-// void task_led_expender(void *unused) {
-//   MCP23S17_Init();
-//   printf("MCP23S17 Initialized\r\n");
-//   while(1) {
-//     MCP23S17_WriteGPIOA(0xFF);
-//     MCP23S17_WriteGPIOB(0xFF);
-//     vTaskDelay(500 / portTICK_PERIOD_MS);
-//     MCP23S17_WriteGPIOA(0x00);
-//     MCP23S17_WriteGPIOB(0x00);
-//     vTaskDelay(500 / portTICK_PERIOD_MS);
-//   }
-//   // MCP23S17_WriteGPIOA(0x00);
-//   // MCP23S17_WriteGPIOB(0x00);
-// }
+void task_led_expender(void *unused) {
+  MCP23S17_Init();
+  printf("MCP23S17 Initialized\r\n");
+  while(1) {
+    MCP23S17_WriteGPIOA(0xFF);
+    MCP23S17_WriteGPIOB(0xFF);
+    // vTaskDelay(500 / portTICK_PERIOD_MS);
+    MCP23S17_WriteGPIOA(0x7F);
+    MCP23S17_WriteGPIOB(0x7F);
+    Read_CODEC_ChipID();
+    
+  }
+  // MCP23S17_WriteGPIOA(0x00);
+  // MCP23S17_WriteGPIOB(0x00);
+}
 
 /* USER CODE END 0 */
 
@@ -118,15 +122,22 @@ int main(void)
   /* Configure the system clock */
   SystemClock_Config();
 
+  /* Configure the peripherals common clocks */
+  PeriphCommonClock_Config();
+
   /* USER CODE BEGIN SysInit */
 
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_DMA_Init();
   MX_USART2_UART_Init();
   MX_SPI3_Init();
+  MX_I2C2_Init();
+  MX_SAI2_Init();
   /* USER CODE BEGIN 2 */
+  __HAL_SAI_ENABLE(&hsai_BlockA2);
 
   //Question 5.a: Make the shell functional in a task
 
@@ -139,21 +150,19 @@ int main(void)
 
   //2.2.1 - Tests Faire clignoter une LED via le GPIO Expander
 
-  // if(xTaskCreate(task_led_expender, "Task LED Expender", 256, NULL, 1, NULL) != pdPASS) {
-  //   printf("Failed to  led expender task\r\n");
-  //   Error_Handler();
-  // }       
+  if(xTaskCreate(task_led_expender, "Task LED Expender", 256, NULL, 1, NULL) != pdPASS) {
+    printf("Failed to  led expender task\r\n");
+    Error_Handler();
+  }       
 
-  MCP23S17_Init();
-  printf("MCP23S17 Initialized\r\n");
-  // vTaskStartScheduler();
+  vTaskStartScheduler();
   /* USER CODE END 2 */
 
   /* Call init function for freertos objects (in cmsis_os2.c) */
-  // MX_FREERTOS_Init();
+  MX_FREERTOS_Init();
 
   /* Start scheduler */
-  // osKernelStart();
+  osKernelStart();
 
   /* We should never get here as control is now taken by the scheduler */
 
@@ -161,13 +170,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    MCP23S17_WriteGPIOA(0xFF);
-    MCP23S17_WriteGPIOB(0xFF);
-    HAL_Delay(500);
-    MCP23S17_WriteGPIOA(0x00);
-    MCP23S17_WriteGPIOB(0x00);
-    HAL_Delay(500);
-    printf("Hello World!\r\n");
+
     //Question 2: Toggle the state of the LED2 every 500 ms
     // HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
     // HAL_Delay(500);
@@ -233,6 +236,31 @@ void SystemClock_Config(void)
   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
 
   if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_4) != HAL_OK)
+  {
+    Error_Handler();
+  }
+}
+
+/**
+  * @brief Peripherals Common Clock Configuration
+  * @retval None
+  */
+void PeriphCommonClock_Config(void)
+{
+  RCC_PeriphCLKInitTypeDef PeriphClkInit = {0};
+
+  /** Initializes the peripherals clock
+  */
+  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_SAI2;
+  PeriphClkInit.Sai2ClockSelection = RCC_SAI2CLKSOURCE_PLLSAI1;
+  PeriphClkInit.PLLSAI1.PLLSAI1Source = RCC_PLLSOURCE_HSI;
+  PeriphClkInit.PLLSAI1.PLLSAI1M = 1;
+  PeriphClkInit.PLLSAI1.PLLSAI1N = 13;
+  PeriphClkInit.PLLSAI1.PLLSAI1P = RCC_PLLP_DIV17;
+  PeriphClkInit.PLLSAI1.PLLSAI1Q = RCC_PLLQ_DIV2;
+  PeriphClkInit.PLLSAI1.PLLSAI1R = RCC_PLLR_DIV2;
+  PeriphClkInit.PLLSAI1.PLLSAI1ClockOut = RCC_PLLSAI1_SAI1CLK;
+  if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)
   {
     Error_Handler();
   }

@@ -71,6 +71,7 @@ target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
     "${CMAKE_SOURCE_DIR}/Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS"
     "${CMAKE_SOURCE_DIR}/shell"
     "${CMAKE_SOURCE_DIR}/MCP23S17"
+    
 )
 
 # --------------------------------------------
