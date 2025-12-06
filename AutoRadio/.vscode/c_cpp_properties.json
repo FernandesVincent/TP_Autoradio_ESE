@@ -14,7 +14,8 @@
                 "${workspaceFolder}/Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F",
                 "${workspaceFolder}/Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS",
                 "${workspaceFolder}/shell",
-                "${workspaceFolder}/MCP23S17"
+                "${workspaceFolder}/MCP23S17",
+                "${workspaceFolder}/sgtl5000"
             ],
             "defines": [
                 "USE_HAL_DRIVER",

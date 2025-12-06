@@ -23,6 +23,7 @@
 #include "i2c.h"
 #include "sai.h"
 #include "spi.h"
+#include "stm32l4xx_hal_sai.h"
 #include "usart.h"
 #include "gpio.h"
 
@@ -31,6 +32,7 @@
 #include <stdio.h>
 #include "shell.h"
 #include "MCP23S17.h"
+#include "sgtl5000.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -74,6 +76,21 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
   if(huart->Instance == USART2){
     shell_uart_rx_callback();
   }
+  
+}
+
+void HAL_SAI_RxCpltCallback(SAI_HandleTypeDef *hsai)
+{
+    if(hsai->Instance == hsai_BlockA2.Instance)
+    {
+    }
+}
+
+void HAL_SAI_TxCpltCallback(SAI_HandleTypeDef *hsai)
+{
+    if(hsai->Instance == hsai_BlockA2.Instance)
+    {
+    }
 }
 
 // void task_shell(void *unsued) {
@@ -95,6 +112,22 @@ void task_led_expender(void *unused) {
   }
   // MCP23S17_WriteGPIOA(0x00);
   // MCP23S17_WriteGPIOB(0x00);
+}
+
+uint8_t rx_buffer[AUDIO_BUFFER_SIZE];
+uint8_t tx_buffer[AUDIO_BUFFER_SIZE];
+
+void sgtl5000_task(void *unused) {
+  sgtl5000_init();
+  printf("SGTL5000 Initialized\r\n");
+  sgtl5000_generate_triangle(tx_buffer, AUDIO_BUFFER_SIZE);
+  HAL_SAI_Transmit_DMA(&hsai_BlockA2, tx_buffer, sizeof(tx_buffer));
+
+  // sgtl5000_start_SAI();
+
+  while(1) {
+    vTaskDelay(1000 / portTICK_PERIOD_MS);
+  }
 }
 
 /* USER CODE END 0 */
@@ -153,7 +186,12 @@ int main(void)
   if(xTaskCreate(task_led_expender, "Task LED Expender", 256, NULL, 1, NULL) != pdPASS) {
     printf("Failed to  led expender task\r\n");
     Error_Handler();
-  }       
+  }
+  
+  if(xTaskCreate(sgtl5000_task, "sgtl5000 Task", 256, NULL, 1, NULL) != pdPASS) {
+    printf("Failed to create sgtl5000 Task\r\n");
+    Error_Handler();
+  }
 
   vTaskStartScheduler();
   /* USER CODE END 2 */
